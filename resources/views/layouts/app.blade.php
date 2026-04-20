@@ -34,10 +34,10 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('categorias.index') }}">Categorías</a>
+                            <a class="nav-link" href="{{ route('productos.index') }}">Productos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('productos.index') }}">Productos</a>
+                            <a class="nav-link" href="{{ route('categorias.index') }}">Categorías</a>
                         </li>
                     </ul>
 
@@ -47,13 +47,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">Iniciar Sesión</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">Registrarse</a>
                                 </li>
                             @endif
                         @else

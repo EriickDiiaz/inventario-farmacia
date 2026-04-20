@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Categoria;
+use App\Models\Producto;
 
 class HomeController extends Controller
 {
@@ -13,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+
     }
 
     /**
@@ -23,6 +25,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $totalCategorias = Categoria::count();
+        $totalProductos = Producto::count();
+        $productosRecientes = Producto::with('categoria')->latest()->take(5)->get();
+
+        return view('home', compact('totalCategorias', 'totalProductos', 'productosRecientes'));
     }
 }

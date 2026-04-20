@@ -2,12 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductoController;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index']);
 
 // Rutas públicas para ver
 Route::resource('categorias', CategoriaController::class)->only(['index', 'show']);
@@ -19,6 +19,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('productos', ProductoController::class)->except(['index', 'show']);
 });
 
-Auth::routes();
+Auth::routes(['register' => false, 'reset' => false]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
