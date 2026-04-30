@@ -32,9 +32,9 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
         ]);
@@ -69,9 +69,9 @@ class ProductoController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
         ]);

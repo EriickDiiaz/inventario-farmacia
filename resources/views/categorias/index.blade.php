@@ -43,7 +43,17 @@
 </div>
 
 <script>
+// Toast auto-hide
 document.addEventListener('DOMContentLoaded', function () {
+    var toastEl = document.getElementById('successToast');
+    if (toastEl) {
+        setTimeout(function () {
+            var toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+            toast.hide();
+        }, 3500); // 3.5 segundos
+    }
+
+    // Confirmación SweetAlert para eliminar
     const deleteForms = document.querySelectorAll('.delete-form');
     deleteForms.forEach(function(form) {
         form.addEventListener('submit', function(e) {
