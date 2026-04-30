@@ -30,8 +30,8 @@ class CategoriaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
         ]);
 
         Categoria::create($request->all());
@@ -63,8 +63,8 @@ class CategoriaController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
         ]);
 
         $categoria = Categoria::findOrFail($id);

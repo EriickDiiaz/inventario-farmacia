@@ -9,16 +9,18 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index']);
 
-// Rutas públicas para ver
-Route::resource('categorias', CategoriaController::class)->only(['index', 'show']);
-Route::resource('productos', ProductoController::class)->only(['index', 'show']);
-
 // Rutas protegidas para CRUD completo
 Route::middleware('auth')->group(function () {
     Route::resource('categorias', CategoriaController::class)->except(['index', 'show']);
     Route::resource('productos', ProductoController::class)->except(['index', 'show']);
 });
 
+// Rutas públicas para ver
+Route::resource('categorias', CategoriaController::class)->only(['index', 'show']);
+Route::resource('productos', ProductoController::class)->only(['index', 'show']);
+
+
+
 Auth::routes(['register' => false, 'reset' => false]);
 
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
