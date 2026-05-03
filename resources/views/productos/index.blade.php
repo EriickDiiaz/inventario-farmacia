@@ -25,7 +25,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ $producto->nombre }}</h5>
-                        <p class="card-text">{{ $producto->descripcion ?? 'Sin descripción' }}</p>
+                        <p class="card-text">{{ $producto->precio ?? 'N/D' }}</p>
                         <a href="{{ route('productos.show', $producto) }}" class="btn btn-outline-info">Ver</a>
                         @auth
                             <a href="{{ route('productos.edit', $producto) }}" class="btn btn-outline-primary">Editar</a>

@@ -18,7 +18,7 @@
                     @else
                         <h4>Bienvenido al inventario de la farmacia</h4>
                         <p>Explora las categorías y productos disponibles. Inicia sesión para agregar, editar o eliminar registros.</p>
-                        <a href="{{ route('login') }}" class="btn btn-primary mb-3">Iniciar Sesión</a>
+                        <a href="{{ route('login') }}" class="btn btn-outlne-primary mb-3">Iniciar Sesión</a>
                     @endauth
 
                     <div class="row mt-4">
@@ -27,7 +27,7 @@
                                 <div class="card-body text-center">
                                     <h5>Total de Categorías</h5>
                                     <h2>{{ $totalCategorias }}</h2>
-                                    <a href="{{ route('categorias.index') }}" class="btn btn-primary">Ver Categorías</a>
+                                    <a href="{{ route('categorias.index') }}" class="btn btn-outline-primary">Ver Categorías</a>
                                 </div>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                                 <div class="card-body text-center">
                                     <h5>Total de Productos</h5>
                                     <h2>{{ $totalProductos }}</h2>
-                                    <a href="{{ route('productos.index') }}" class="btn btn-primary">Ver Productos</a>
+                                    <a href="{{ route('productos.index') }}" class="btn btn-outline-primary">Ver Productos</a>
                                 </div>
                             </div>
                         </div>
@@ -49,10 +49,10 @@
                                 @foreach($productosRecientes as $producto)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <div>
-                                            <strong>{{ $producto->name }}</strong> - ${{ $producto->price }} (Stock: {{ $producto->stock }})
-                                            <br><small class="text-muted">Categoría: {{ $producto->categoria->name }}</small>
+                                            <strong>{{ $producto->nombre }}</strong> - ${{ $producto->precio }} (Stock: {{ $producto->stock }})
+                                            <br><small class="text-muted">Categoría: {{ $producto->categoria->nombre }}</small>
                                         </div>
-                                        <a href="{{ route('productos.show', $producto) }}" class="btn btn-sm btn-info">Ver</a>
+                                        <a href="{{ route('productos.show', $producto) }}" class="btn btn-sm btn-outline-info">Ver</a>
                                     </li>
                                 @endforeach
                             </ul>
