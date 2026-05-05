@@ -15,7 +15,11 @@
 
 @section('content')
 <div class="container">
-    <h1>Productos</h1>
+    <div class="d-flex align-items-center">
+        <h1>Productos</h1>
+        <span class="badge bg-primary m-2">{{ $productos->count() }}</span>
+    </div>
+    
     @auth
         <a href="{{ route('productos.create') }}" class="btn btn-outline-primary mb-3">Crear Producto</a>
     @endauth

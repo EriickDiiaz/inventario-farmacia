@@ -15,7 +15,10 @@
     @endauth
 
     <hr>
-    <h3>Productos de esta categoría</h3>
+    <div class="d-flex align-items-center">
+        <h3>Productos en esta categoría</h3>
+        <span class="badge bg-primary m-2">{{ $categoria->productos->count() }}</span>
+    </div>
     <div class="row">
         @forelse($categoria->productos as $producto)
             <div class="col-md-4 mb-4">

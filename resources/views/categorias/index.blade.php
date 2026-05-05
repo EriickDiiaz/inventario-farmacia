@@ -15,7 +15,10 @@
 
 @section('content')
 <div class="container">
-    <h1>Categorías</h1>
+    <div class="d-flex align-items-center">
+        <h1>Categorías</h1>
+        <span class="badge bg-primary m-2">{{ $categorias->count() }}</span>
+    </div>
     @auth
         <a href="{{ route('categorias.create') }}" class="btn btn-outline-primary mb-3">Crear Categoría</a>
     @endauth
@@ -24,7 +27,10 @@
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $categoria->nombre }}</h5>
+                        <div class="d-flex align-items-center">
+                            <h5 class="card-title">{{ $categoria->nombre }}</h5>
+                            <span class="badge bg-primary m-2">{{ $categoria->productos->count() }}</span>
+                        </div>
                         <p class="card-text">{{ $categoria->descripcion ?? 'Sin descripción' }}</p>
                         <a href="{{ route('categorias.show', $categoria) }}" class="btn btn-outline-info">Ver</a>
                         @auth
