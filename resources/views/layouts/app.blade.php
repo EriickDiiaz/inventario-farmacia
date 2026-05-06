@@ -39,6 +39,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('categorias.index') }}">Categorías</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('usuarios.index') }}">Usuarios</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -48,12 +51,6 @@
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">Iniciar Sesión</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">Registrarse</a>
                                 </li>
                             @endif
                         @else
