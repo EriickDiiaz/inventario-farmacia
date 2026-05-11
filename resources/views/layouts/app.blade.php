@@ -39,9 +39,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('categorias.index') }}">Categorías</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('usuarios.index') }}">Usuarios</a>
-                        </li>
+                        @auth
+                           <li class="nav-item">
+                                <a class="nav-link" href="{{ route('usuarios.index') }}">Usuarios</a>
+                            </li> 
+                        @endauth
+                        
                     </ul>
 
                     <!-- Right Side Of Navbar -->

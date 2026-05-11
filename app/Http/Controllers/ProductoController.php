@@ -31,13 +31,32 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
+        $messages = [
+            'nombre.required' => 'El nombre del producto es obligatorio.',
+            'nombre.string' => 'El nombre debe ser texto.',
+            'nombre.max' => 'El nombre no puede exceder :max caracteres.',
+
+            'descripcion.string' => 'La descripción debe ser texto.',
+
+            'precio.required' => 'El precio es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un número.',
+            'precio.min' => 'El precio debe ser al menos :min.',
+
+            'stock.required' => 'El stock es obligatorio.',
+            'stock.integer' => 'El stock debe ser un número entero.',
+            'stock.min' => 'El stock debe ser al menos :min.',
+
+            'categoria_id.required' => 'La categoría es obligatoria.',
+            'categoria_id.exists' => 'La categoría seleccionada no es válida.',
+        ];
+
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
             'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
-        ]);
+        ], $messages);
 
         Producto::create($request->all());
 
@@ -68,13 +87,32 @@ class ProductoController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $messages = [
+            'nombre.required' => 'El nombre del producto es obligatorio.',
+            'nombre.string' => 'El nombre debe ser texto.',
+            'nombre.max' => 'El nombre no puede exceder :max caracteres.',
+
+            'descripcion.string' => 'La descripción debe ser texto.',
+
+            'precio.required' => 'El precio es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un número.',
+            'precio.min' => 'El precio debe ser al menos :min.',
+
+            'stock.required' => 'El stock es obligatorio.',
+            'stock.integer' => 'El stock debe ser un número entero.',
+            'stock.min' => 'El stock debe ser al menos :min.',
+
+            'categoria_id.required' => 'La categoría es obligatoria.',
+            'categoria_id.exists' => 'La categoría seleccionada no es válida.',
+        ];
+
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
             'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
-        ]);
+        ], $messages);
 
         $producto = Producto::findOrFail($id);
         $producto->update($request->all());

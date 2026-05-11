@@ -26,11 +26,26 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $messages = [
+            'name.required' => 'El nombre es obligatorio.',
+            'name.string' => 'El nombre debe ser un texto válido.',
+            'name.max' => 'El nombre no puede exceder :max caracteres.',
+
+            'email.required' => 'El usuario es obligatorio.',
+            'email.max' => 'El usuario no puede exceder :max caracteres.',
+            'email.unique' => 'Este usuario ya está en uso.',
+
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.string' => 'La contraseña debe ser texto.',
+            'password.min' => 'La contraseña debe tener al menos :min caracteres.',
+            'password.confirmed' => 'La confirmación de la contraseña no coincide.',
+        ];
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        ], $messages);
 
         User::create([
             'name' => $data['name'],
@@ -48,11 +63,25 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        $messages = [
+            'name.required' => 'El nombre es obligatorio.',
+            'name.string' => 'El nombre debe ser un texto válido.',
+            'name.max' => 'El nombre no puede exceder :max caracteres.',
+
+            'email.required' => 'El usuario es obligatorio.',
+            'email.max' => 'El usuario no puede exceder :max caracteres.',
+            'email.unique' => 'Este usuario ya está en uso.',
+
+            'password.string' => 'La contraseña debe ser texto.',
+            'password.min' => 'La contraseña debe tener al menos :min caracteres.',
+            'password.confirmed' => 'La confirmación de la contraseña no coincide.',
+        ];
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'max:255', 'unique:users,email,' . $user->id],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-        ]);
+        ], $messages);
 
         $user->name = $data['name'];
         $user->email = $data['email'];

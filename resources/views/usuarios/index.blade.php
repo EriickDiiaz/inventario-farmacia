@@ -38,8 +38,8 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td style="width: 200px;">
-                                <a href="{{ route('usuarios.edit', $user) }}" class="btn btn-outline-primary">Editar</a>
-                                <form action="{{ route('usuarios.destroy', $user) }}" method="POST" class="d-inline delete-form">
+                                    <a href="{{ route('usuarios.edit', $user) }}" class="btn btn-outline-primary">Editar</a>
+                                    <form action="{{ route('usuarios.destroy', $user) }}" method="POST" class="d-inline delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-outline-danger">Eliminar</button>

@@ -29,10 +29,18 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
+        $messages = [
+            'nombre.required' => 'El nombre de la categoría es obligatorio.',
+            'nombre.string' => 'El nombre debe ser texto.',
+            'nombre.max' => 'El nombre no puede exceder :max caracteres.',
+
+            'descripcion.string' => 'La descripción debe ser texto.',
+        ];
+
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-        ]);
+        ], $messages);
 
         Categoria::create($request->all());
 
@@ -62,10 +70,18 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $messages = [
+            'nombre.required' => 'El nombre de la categoría es obligatorio.',
+            'nombre.string' => 'El nombre debe ser texto.',
+            'nombre.max' => 'El nombre no puede exceder :max caracteres.',
+
+            'descripcion.string' => 'La descripción debe ser texto.',
+        ];
+
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-        ]);
+        ], $messages);
 
         $categoria = Categoria::findOrFail($id);
         $categoria->update($request->all());

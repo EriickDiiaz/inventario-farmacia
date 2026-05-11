@@ -14,7 +14,7 @@ Route::get('/home', [HomeController::class, 'index']);
 Route::middleware('auth')->group(function () {
     Route::resource('categorias', CategoriaController::class)->except(['index', 'show']);
     Route::resource('productos', ProductoController::class)->except(['index', 'show']);
-    Route::resource('usuarios', UserController::class);
+    Route::resource('usuarios', UserController::class)->parameters(['usuarios' => 'user']);
 });
 
 // Rutas públicas para ver
