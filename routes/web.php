@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MovimientoController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -15,6 +16,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('categorias', CategoriaController::class)->except(['index', 'show']);
     Route::resource('productos', ProductoController::class)->except(['index', 'show']);
     Route::resource('usuarios', UserController::class)->parameters(['usuarios' => 'user']);
+    Route::resource('movimientos', MovimientoController::class);
 });
 
 // Rutas públicas para ver

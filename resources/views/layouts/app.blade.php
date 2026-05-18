@@ -34,6 +34,9 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('movimientos.index') }}">Movimientos</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('productos.index') }}">Productos</a>
                         </li>
                         <li class="nav-item">
