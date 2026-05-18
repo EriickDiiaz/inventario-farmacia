@@ -3,6 +3,11 @@
 @section('content')
 <div class="container">
     <h1>{{ $producto->nombre }}</h1>
+    @if($producto->imagen)
+        <div class="mb-3">
+            <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" style="max-width:300px;">
+        </div>
+    @endif
     <p><strong>Descripción:</strong> {{ $producto->descripcion ?? 'Sin descripción' }}</p>
     <p><strong>Precio:</strong> ${{ $producto->precio }}</p>
     <p><strong>Stock:</strong> {{ $producto->stock }}</p>

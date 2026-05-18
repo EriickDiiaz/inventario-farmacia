@@ -23,6 +23,9 @@
         @foreach($productos as $producto)
             <div class="col-md-4 mb-4">
                 <div class="card">
+                    @if($producto->imagen)
+                        <img src="{{ asset('storage/' . $producto->imagen) }}" class="card-img-top" alt="{{ $producto->nombre }}" style="height:180px; object-fit:cover;">
+                    @endif
                     <div class="card-body">
                         <h5 class="card-title">{{ $producto->nombre }}</h5>
                         <p class="card-text">{{ $producto->precio ?? 'N/D' }}</p>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Producto;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
@@ -64,9 +65,15 @@ class ProductoController extends Controller
             'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
+            'imagen' => 'nullable|image|max:2048',
         ], $messages);
 
-        Producto::create($request->all());
+        $data = $request->all();
+        if ($request->hasFile('imagen')) {
+            $data['imagen'] = $request->file('imagen')->store('productos', 'public');
+        }
+
+        Producto::create($data);
 
         return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
     }
@@ -120,10 +127,19 @@ class ProductoController extends Controller
             'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
+            'imagen' => 'nullable|image|max:2048',
         ], $messages);
 
         $producto = Producto::findOrFail($id);
-        $producto->update($request->all());
+        $data = $request->all();
+        if ($request->hasFile('imagen')) {
+            // eliminar imagen anterior si existe
+            if ($producto->imagen) {
+                Storage::disk('public')->delete($producto->imagen);
+            }
+            $data['imagen'] = $request->file('imagen')->store('productos', 'public');
+        }
+        $producto->update($data);
 
         return redirect()->route('productos.index')->with('success', 'Producto actualizado exitosamente.');
     }
