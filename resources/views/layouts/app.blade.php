@@ -83,9 +83,34 @@
             </div>
         </nav>
 
+        @if (session('success') || session('error'))
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1080; min-width: 300px;">
+                <div id="flashToast" class="toast align-items-center text-bg-{{ session('success') ? 'success' : 'danger' }} border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            {{ session('success') ?? session('error') }}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <main class="py-4">
             @yield('content')
         </main>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toastEl = document.getElementById('flashToast');
+        if (toastEl) {
+            setTimeout(function () {
+                const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+                toast.hide();
+            }, 3500);
+        }
+    });
+    </script>
 </body>
 </html>

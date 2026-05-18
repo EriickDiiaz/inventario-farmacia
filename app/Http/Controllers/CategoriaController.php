@@ -10,10 +10,17 @@ class CategoriaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categorias = Categoria::all();
-        return view('categorias.index', compact('categorias'));
+        $search = $request->query('search');
+
+        $categorias = Categoria::when($search, function ($query, $search) {
+                $query->where('nombre', 'like', "%{$search}%")
+                    ->orWhere('descripcion', 'like', "%{$search}%");
+            })
+            ->get();
+
+        return view('categorias.index', compact('categorias', 'search'));
     }
 
     /**

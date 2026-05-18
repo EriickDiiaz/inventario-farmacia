@@ -11,10 +11,18 @@ class ProductoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $productos = Producto::with('categoria')->get();
-        return view('productos.index', compact('productos'));
+        $search = $request->query('search');
+
+        $productos = Producto::with('categoria')
+            ->when($search, function ($query, $search) {
+                $query->where('nombre', 'like', "%{$search}%")
+                    ->orWhere('descripcion', 'like', "%{$search}%");
+            })
+            ->get();
+
+        return view('productos.index', compact('productos', 'search'));
     }
 
     /**

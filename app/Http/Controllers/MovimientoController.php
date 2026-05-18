@@ -10,10 +10,23 @@ use Illuminate\Support\Facades\DB;
 
 class MovimientoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $movimientos = Movimiento::with('producto', 'usuario')->latest()->paginate(20);
-        return view('movimientos.index', compact('movimientos'));
+        $search = $request->query('search');
+
+        $movimientos = Movimiento::with('producto', 'usuario')
+            ->when($search, function ($query, $search) {
+                $query->where('tipo', 'like', "%{$search}%")
+                    ->orWhere('motivo', 'like', "%{$search}%")
+                    ->orWhere('referencia', 'like', "%{$search}%")
+                    ->orWhereHas('producto', function ($query) use ($search) {
+                        $query->where('nombre', 'like', "%{$search}%");
+                    });
+            })
+            ->latest()
+            ->paginate(20);
+
+        return view('movimientos.index', compact('movimientos', 'search'));
     }
 
     public function create()
@@ -33,24 +46,27 @@ class MovimientoController extends Controller
             'precio_unitario' => 'nullable|numeric|min:0',
         ]);
 
-        DB::transaction(function () use ($data) {
-            $data['usuario_id'] = Auth::id();
-            $mov = Movimiento::create($data);
+        try {
+            DB::transaction(function () use ($data) {
+                $data['usuario_id'] = Auth::id();
+                $movimiento = Movimiento::create($data);
 
-            $producto = Producto::findOrFail($data['producto_id']);
+                $producto = Producto::findOrFail($data['producto_id']);
 
-            if ($data['tipo'] === 'entrada') {
-                $producto->stock = $producto->stock + $data['cantidad'];
-            } else {
-                // salida
-                if ($producto->stock < $data['cantidad']) {
-                    throw new \Exception('Stock insuficiente para este producto.');
+                if ($data['tipo'] === 'entrada') {
+                    $producto->stock = $producto->stock + $data['cantidad'];
+                } else {
+                    if ($producto->stock < $data['cantidad']) {
+                        throw new \Exception('Stock insuficiente para este producto.');
+                    }
+                    $producto->stock = $producto->stock - $data['cantidad'];
                 }
-                $producto->stock = $producto->stock - $data['cantidad'];
-            }
 
-            $producto->save();
-        });
+                $producto->save();
+            });
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
 
         return redirect()->route('movimientos.index')->with('success', 'Movimiento registrado.');
     }
@@ -81,31 +97,35 @@ class MovimientoController extends Controller
             'precio_unitario' => 'nullable|numeric|min:0',
         ]);
 
-        DB::transaction(function () use ($movimiento, $data) {
-            // revert previous movimiento
-            $producto = Producto::findOrFail($movimiento->producto_id);
-            if ($movimiento->tipo === 'entrada') {
-                $producto->stock -= $movimiento->cantidad;
-            } else {
-                $producto->stock += $movimiento->cantidad;
-            }
-            $producto->save();
-
-            // apply new movimiento
-            $newProducto = Producto::findOrFail($data['producto_id']);
-            if ($data['tipo'] === 'entrada') {
-                $newProducto->stock += $data['cantidad'];
-            } else {
-                if ($newProducto->stock < $data['cantidad']) {
-                    throw new \Exception('Stock insuficiente para este producto.');
+        try {
+            DB::transaction(function () use ($movimiento, $data) {
+                // revert previous movimiento
+                $producto = Producto::findOrFail($movimiento->producto_id);
+                if ($movimiento->tipo === 'entrada') {
+                    $producto->stock -= $movimiento->cantidad;
+                } else {
+                    $producto->stock += $movimiento->cantidad;
                 }
-                $newProducto->stock -= $data['cantidad'];
-            }
-            $newProducto->save();
+                $producto->save();
 
-            $data['usuario_id'] = Auth::id();
-            $movimiento->update($data);
-        });
+                // apply new movimiento
+                $newProducto = Producto::findOrFail($data['producto_id']);
+                if ($data['tipo'] === 'entrada') {
+                    $newProducto->stock += $data['cantidad'];
+                } else {
+                    if ($newProducto->stock < $data['cantidad']) {
+                        throw new \Exception('Stock insuficiente para este producto.');
+                    }
+                    $newProducto->stock -= $data['cantidad'];
+                }
+                $newProducto->save();
+
+                $data['usuario_id'] = Auth::id();
+                $movimiento->update($data);
+            });
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
 
         return redirect()->route('movimientos.index')->with('success', 'Movimiento actualizado.');
     }

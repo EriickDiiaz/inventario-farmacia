@@ -1,28 +1,24 @@
 @extends('layouts.app')
 
-@if (session('success'))
-    <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1080; min-width: 300px;">
-        <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true" id="successToast">
-            <div class="d-flex">
-                <div class="toast-body">
-                    {{ session('success') }}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
-@endif
-
 @section('content')
 <div class="container">
-    <div class="d-flex align-items-center">
+    <div class="col-md-6 d-flex align-items-center">
         <h1>Productos</h1>
-        <span class="badge bg-primary m-2">{{ $productos->count() }}</span>
+        <span class="badge bg-primary ms-2">{{ $productos->count() }}</span>
+    </div>
+   
+    <div class="row align-items-center mb-3">
+        <div class="d-flex align-items-center justify-content-between">
+            @auth
+                <a href="{{ route('productos.create') }}" class="btn btn-outline-primary mb-3">Crear Producto</a>
+            @endauth
+            <form action="{{ route('productos.index') }}" method="GET" class="d-flex mb-3">
+                <input type="text" name="search" class="form-control me-2" placeholder="Buscar productos..." value="{{ request('search') }}">
+                <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+            </form>
+        </div>
     </div>
     
-    @auth
-        <a href="{{ route('productos.create') }}" class="btn btn-outline-primary mb-3">Crear Producto</a>
-    @endauth
     <div class="row">
         @foreach($productos as $producto)
             <div class="col-md-4 mb-4">

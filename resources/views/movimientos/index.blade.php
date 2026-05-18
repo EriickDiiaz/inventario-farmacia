@@ -1,28 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-@if ($errors->any())
-    <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1080; min-width: 300px;">
-        <div class="toast align-items-center text-bg-warning border-0 show" role="alert" aria-live="assertive" aria-atomic="true" id="warningToast">
-            <div class="d-flex">
-                <div class="toast-body">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
+<div class="container">
+    <div class="col-md-6 d-flex align-items-center">
+        <h1>Movimientos de Inventario</h1>
+        <span class="badge bg-primary ms-2">{{ $movimientos->total() }}</span>
+    </div>
+   
+    <div class="row align-items-center mb-3">
+        <div class="d-flex align-items-center justify-content-between">
+            @auth
+                <a href="{{ route('movimientos.create') }}" class="btn btn-outline-primary mb-3">Registrar Movimiento</a>
+            @endauth
+            <form action="{{ route('movimientos.index') }}" method="GET" class="d-flex mb-3">
+                <input type="text" name="search" class="form-control me-2" placeholder="Buscar movimientos..." value="{{ request('search') }}">
+                <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+            </form>
         </div>
     </div>
-@endif
-<div class="container">
-    <div class="d-flex align-items-center">
-        <h1>Movimientos de Inventario</h1>
-        <span class="badge bg-primary m-2">{{ $movimientos->count() }}</span>
-    </div>
-    @auth
-    <a href="{{ route('movimientos.create') }}" class="btn btn-outline-primary mb-3">Registrar Movimiento</a>
-    @endauth
 
     <table class="table table-striped">
         <thead>
